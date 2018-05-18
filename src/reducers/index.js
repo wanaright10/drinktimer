@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 import { CHANGE_PATH } from "../actions";
 
 const routerReducer = (state = {}, action) => {
@@ -15,7 +14,6 @@ const routerReducer = (state = {}, action) => {
 };
 
 const reducers = {
-    form: formReducer,
     router: routerReducer,
 };
 const allReducers = combineReducers(reducers);
