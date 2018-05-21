@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ActionSheet, Button, Icon, Text } from 'native-base';
 import styles from "./Styles";
 import { saveCurrentDrinkQuantity } from "../util/DBService";
@@ -12,20 +13,25 @@ const options = {
     cancelButtonIndex: CANCEL_INDEX,
     title: "选择您这次的喝水量"
 };
-const onClick = selectOptionIndex => {
-    const selectedQuantity = BUTTONS[selectOptionIndex].replace(" ml", "");
-    saveCurrentDrinkQuantity(selectedQuantity);
-    this.props.dispatch(pushOneChartsDrinkQuantity(this.state.drinkQuantity));
-};
 
-const QuickRecordButton = () => (
-    <Button iconLeft full large onPress={() => ActionSheet.show(
-        options,
-        onClick
-    )} title="快捷记录喝水量" style={styles.marginTop30}>
-        <Icon name='md-water' />
-        <Text>快捷记录</Text>
-    </Button>
-);
+class QuickRecordButton extends Component {
+    onClick = selectOptionIndex => {
+        const selectedQuantity = BUTTONS[selectOptionIndex].replace(" ml", "");
+        saveCurrentDrinkQuantity(selectedQuantity);
+        this.props.dispatch(pushOneChartsDrinkQuantity(selectedQuantity));
+    };
 
-export default QuickRecordButton;
+    render() {
+        return (
+            <Button iconLeft full large onPress={() => ActionSheet.show(
+                options,
+                this.onClick
+            )} title="快捷记录喝水量" style={styles.marginTop30}>
+                <Icon name='md-water' />
+                <Text>快捷记录</Text>
+            </Button>
+        );
+    }
+}
+
+export default connect()(QuickRecordButton);

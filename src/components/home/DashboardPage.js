@@ -10,37 +10,10 @@ import { saveChartsDrinkQuantity } from "../../actions";
 import ReactPropTypes from "prop-types";
 
 class Dashboard extends Component {
-    static defaultProps = {
-        eChartsOptions: {
-            title: {
-                text: '今日总量: 5000ml'
-            },
-            legend: {
-                data: ['喝水量']
-            },
-            xAxis: {
-                data: [],
-            },
-            yAxis: {
-                name: '毫升(ml)'
-            },
-            tooltip: {
-                formatter: '{c0} ml'
-            },
-            series: [{
-                name: '喝水量',
-                type: 'bar',
-                color: ['#aadaf5'],
-                data: []
-            }]
-        },
-        refresh: false
-    };
 
     static propTypes = {
         currentPath: ReactPropTypes.string.isRequired,
-        eChartsOptions: ReactPropTypes.object,
-        refresh: ReactPropTypes.bool,
+        eChartsOptions: ReactPropTypes.object.isRequired,
     };
 
     componentDidMount() {
