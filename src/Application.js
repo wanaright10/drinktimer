@@ -5,10 +5,16 @@ import { Provider } from 'react-redux';
 import Router, { PathEnum } from "./components/route/Router";
 import { redirectTo } from "./actions";
 import LocalContainer from "./components/common/LocalContainer";
+import { getNotificationPermitAndAddListerner } from "./components/util/LocalNotifications";
 
 const store = createStore(allReducers);
 store.dispatch(redirectTo(PathEnum.dashboard));
 export default class Application extends Component {
+
+    componentDidMount() {
+        getNotificationPermitAndAddListerner();
+    }
+
     render() {
         return (
             <Provider store={store}>

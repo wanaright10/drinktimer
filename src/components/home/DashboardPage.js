@@ -8,6 +8,7 @@ import CustomRecordPopup from "./CustomRecordPopup";
 import { findTodayDrinkData } from "../util/DBService";
 import { saveChartsDrinkQuantity } from "../../actions";
 import ReactPropTypes from "prop-types";
+import { sendImmediateNotification } from "../util/LocalNotifications";
 
 class Dashboard extends Component {
 
@@ -18,6 +19,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         fetchDrinkQuantityData(this.props.dispatch);
+        sendImmediateNotification();
     }
 
     render() {
