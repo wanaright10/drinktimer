@@ -4,6 +4,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^27.0.1",
+    "moment": "^2.22.1",
     "native-base": "^2.4.3",
     "native-echarts": "^0.4.0",
     "prop-types": "^15.6.1",
