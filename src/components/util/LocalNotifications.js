@@ -1,7 +1,8 @@
 import moment from "moment";
 import React from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
 import { Notifications, Permissions } from 'expo';
+import { findIntervalTime, findNotificationStatus } from "./DBService";
 
 const localNotification = {
     title: '该喝水啦!',
@@ -28,11 +29,18 @@ async function getiOSNotificationPermission() {
 }
 
 const listenForNotifications = () => {
+    Notifications.cancelAllScheduledNotificationsAsync();
     Notifications.addListener(notification => {
-        if (notification.origin === 'received' && Platform.OS === 'ios') {
+        if (notification.origin === 'received') {
             Alert.alert('该喝水啦!', '喝水并照顾好自己哦', [
-                    { text: '马上喝', onPress: () => sendDelayedNotification(60) },
-                    { text: '等会儿再提醒我', onPress: () => sendDelayedNotification(10) },
+                    {
+                        text: '马上喝',
+                        onPress: () => findIntervalTime('interval', time => sendDelayedNotification(Number(time)))
+                    },
+                    {
+                        text: '等会儿再提醒我',
+                        onPress: () => findIntervalTime('intervalLater', time => sendDelayedNotification(Number(time)))
+                    },
                 ],
                 { cancelable: true });
         }
@@ -53,12 +61,16 @@ export const sendImmediateNotification = () => {
 };
 
 export const sendDelayedNotification = (minutes) => {
-    localNotification.data = { type: 'delayed' };
-    const schedulingOptions = {
-        time: moment().add(minutes, 'm').valueOf()
-    };
+    findNotificationStatus(status => {
+        if (status === 'true') {
+            localNotification.data = { type: 'delayed' };
+            const schedulingOptions = {
+                time: moment().add(minutes, 'm').valueOf()
+            };
 
-    Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions)
-        .then(id => console.info(`Delayed notification scheduled (${id}) at ${moment(schedulingOptions.time).format()}`))
-        .catch(err => console.error(err))
+            Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions)
+                .then(id => console.info(`Delayed notification scheduled (${id}) at ${moment(schedulingOptions.time).format()}`))
+                .catch(err => console.error(err))
+        }
+    });
 };
