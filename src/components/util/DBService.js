@@ -100,5 +100,6 @@ export const findQuickDrinkQuantityList = callback => {
 
 export const saveQuickDrinkQuantityList = (quantityList) => {
     const key = "quickDrinkQuantityList";
+    quantityList.sort((a, b) => a - b);
     DB.save(key, JSON.stringify(quantityList));
 };

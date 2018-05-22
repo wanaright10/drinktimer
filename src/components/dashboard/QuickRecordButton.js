@@ -6,29 +6,37 @@ import { saveCurrentDrinkQuantity } from "../util/DBService";
 import { pushOneChartsDrinkQuantity } from "../../actions";
 
 class QuickRecordButton extends Component {
-    onClick = selectOptionIndex => {
+    showActionSheet() {
         const { buttons, cancelIndex } = this.props;
-        if (selectOptionIndex !== cancelIndex) {
-            const selectedQuantity = buttons[selectOptionIndex].replace(" 毫升", "");
-            saveCurrentDrinkQuantity(selectedQuantity);
-            this.props.dispatch(pushOneChartsDrinkQuantity(selectedQuantity));
-        }
-    };
 
-    render() {
-        const { buttons, cancelIndex } = this.props;
         const options = {
             options: buttons,
             cancelButtonIndex: cancelIndex,
             title: "选择您这次的喝水量"
         };
+        if (this.actionSheet !== null) {
+            this.actionSheet._root.showActionSheet(options, this.onClick);
+        }
+    }
+
+    onClick = selectOptionIndex => {
+        const { buttons, cancelIndex, dispatch } = this.props;
+        if (selectOptionIndex !== cancelIndex) {
+            const selectedQuantity = buttons[selectOptionIndex].replace(" 毫升", "");
+            saveCurrentDrinkQuantity(selectedQuantity);
+            dispatch(pushOneChartsDrinkQuantity(selectedQuantity));
+        }
+    };
+
+    render() {
         return (
-            <Button iconLeft full large onPress={() => ActionSheet.show(
-                options,
-                this.onClick
-            )} title="快捷记录喝水量" style={styles.marginTop30}>
+            <Button iconLeft full large onPress={() => this.showActionSheet()} title="快捷记录喝水量"
+                    style={styles.marginTop30}>
                 <Icon name='md-water' />
                 <Text>快捷记录</Text>
+                <ActionSheet ref={(c) => {
+                    this.actionSheet = c;
+                }} />
             </Button>
         );
     }
@@ -38,9 +46,12 @@ const mapStateToProps = ({ settings: { quickDrinkQuantityList } }) => {
     if (!quickDrinkQuantityList) {
         quickDrinkQuantityList = ['50', '100', '150', '200', '250'];
     }
+
+    const buttons = quickDrinkQuantityList.map(quantity => `${quantity} 毫升`);
+    buttons.push('取消');
     return {
-        buttons: quickDrinkQuantityList.map(quantity => `${quantity} 毫升`),
-        cancelIndex: quickDrinkQuantityList.length === 0 ? 0 : quickDrinkQuantityList.length === 0 - 1
+        buttons,
+        cancelIndex: buttons.length - 1
     };
 };
 

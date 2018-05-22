@@ -26,7 +26,8 @@ class IntervalNotification extends Component {
                 <Text>通知间隔时间</Text>
                 </Body>
                 <Right>
-                    <Button iconRight transparent onPress={() => dispatch(redirectTo(PathEnum.intervalInput))}
+                    <Button iconRight transparent
+                            onPress={() => dispatch(redirectTo(PathEnum.intervalInput, PathEnum.settings))}
                             title="设置">
                         <Text>{interval} 分钟</Text>
                         <Icon name='arrow-forward' />

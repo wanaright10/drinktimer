@@ -16,7 +16,7 @@ const routerReducer = (state = {}, action) => {
         case CHANGE_PATH:
             return {
                 ...state,
-                currentPath: action.payload,
+                ...action.payload,
             };
         default:
     }

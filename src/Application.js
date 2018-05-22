@@ -10,7 +10,7 @@ import { IntervalType } from "./components/settings/IntervalInputPage";
 import { findIntervalTime, findNotificationStatus, findQuickDrinkQuantityList } from "./components/util/DBService";
 
 const store = createStore(allReducers);
-store.dispatch(redirectTo(PathEnum.dashboard));
+store.dispatch(redirectTo(PathEnum.dashboard, PathEnum.dashboard));
 export default class Application extends Component {
 
     componentDidMount() {

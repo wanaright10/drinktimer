@@ -24,17 +24,17 @@ class LocalFooter extends Component {
             <Footer>
                 <FooterTab>
                     <Button vertical active={settingsActive}
-                            onPress={() => dispatch(redirectTo(PathEnum.settings))} title="设置">
+                            onPress={() => dispatch(redirectTo(PathEnum.settings, currentPath))} title="设置">
                         <Icon name="md-settings" />
                         <Text>设置</Text>
                     </Button>
                     <Button vertical active={currentPath === PathEnum.dashboard}
-                            onPress={() => dispatch(redirectTo(PathEnum.dashboard))} title="记录">
+                            onPress={() => dispatch(redirectTo(PathEnum.dashboard, currentPath))} title="记录">
                         <Icon active name="md-podium" />
                         <Text>记录</Text>
                     </Button>
                     <Button vertical active={currentPath === PathEnum.home}
-                            onPress={() => dispatch(redirectTo(PathEnum.home))} title="主页">
+                            onPress={() => dispatch(redirectTo(PathEnum.home, currentPath))} title="主页">
                         <Icon name="md-home" />
                         <Text>主页</Text>
                     </Button>

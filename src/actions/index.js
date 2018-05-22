@@ -10,8 +10,8 @@ export const PUSH_QUICK_DRINK_QUANTITY_LIST = 'PUSH_QUICK_DRINK_QUANTITY_LIST';
 export const SET_QUICK_DRINK_QUANTITY_LIST = 'SET_QUICK_DRINK_QUANTITY_LIST';
 export const DELETE_QUICK_DRINK_QUANTITY_LIST = 'DELETE_QUICK_DRINK_QUANTITY_LIST';
 
-export const redirectTo = path => ({
-    type: CHANGE_PATH, payload: path,
+export const redirectTo = (currentPath, previousPath) => ({
+    type: CHANGE_PATH, payload: { currentPath, previousPath },
 });
 
 export const saveChartsDrinkQuantity = drinkQuantity => ({

@@ -41,7 +41,8 @@ class IntervalInput extends Component {
             const interval = this.state.interval || this.props.interval;
             saveIntervalTime(intervalType, interval);
             dispatch(updateIntervalTime(intervalType, interval));
-            dispatch(redirectTo(PathEnum.settings));
+            dispatch(redirectTo(PathEnum.settings,
+                intervalType === IntervalType.INTERVAL ? PathEnum.intervalInput : PathEnum.intervalLaterInput));
         }
     };
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Alert } from 'react-native';
 import { Body, Button, Form, Icon, Input, Item, Label, ListItem, Right, Separator, Text, View } from 'native-base';
 import ReactPropTypes from "prop-types";
 import styles from "../dashboard/Styles";
@@ -44,8 +45,10 @@ class QuickDrinkQuantityList extends Component {
             const { addQuantity } = this.state;
             dispatch(pushQuickDrinkQuantityList(addQuantity));
 
+            quickDrinkQuantityList.push(addQuantity);
             saveQuickDrinkQuantityList(quickDrinkQuantityList);
             this.setState({ addQuantity });
+            Alert.alert("新增成功");
         }
     };
 
