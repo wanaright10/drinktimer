@@ -93,7 +93,10 @@ export const findQuickDrinkQuantityList = callback => {
         if (value) {
             callback(JSON.parse(value));
         } else {
-            DB.save(key, JSON.stringify(['50', '100', '150', '200', '250']));
+            value = ['50', '100', '150', '200', '250'];
+            DB.save(key, JSON.stringify(value));
+
+            callback(value);
         }
     });
 };
