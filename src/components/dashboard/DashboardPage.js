@@ -5,8 +5,6 @@ import { Root } from 'native-base';
 import CustomRecordButton from "./CustomRecordButton";
 import QuickRecordButton from "./QuickRecordButton";
 import CustomRecordPopup from "./CustomRecordPopup";
-import { findTodayDrinkData } from "../util/DBService";
-import { saveChartsDrinkQuantity } from "../../actions";
 import ReactPropTypes from "prop-types";
 
 class Dashboard extends Component {
@@ -15,10 +13,6 @@ class Dashboard extends Component {
         currentPath: ReactPropTypes.string.isRequired,
         eChartsOptions: ReactPropTypes.object.isRequired,
     };
-
-    componentDidMount() {
-        fetchDrinkQuantityData(this.props.dispatch);
-    }
 
     render() {
         const { eChartsOptions } = this.props;
@@ -34,37 +28,38 @@ class Dashboard extends Component {
     }
 }
 
-const fetchDrinkQuantityData = (dispatch) => {
-    findTodayDrinkData(drinkQuantity => {
-        dispatch(saveChartsDrinkQuantity(drinkQuantity));
-    });
-};
-
-const mapStateToProps = ({ router: { currentPath }, charts: { drinkQuantity } }) => ({
-    currentPath,
-    eChartsOptions: {
-        title: {
-            text: '今日总量: 5000ml'
-        },
-        legend: {
-            data: ['喝水量']
-        },
-        xAxis: {
-            data: drinkQuantity && drinkQuantity.time ? drinkQuantity.time : [],
-        },
-        yAxis: {
-            name: '毫升(ml)'
-        },
-        tooltip: {
-            formatter: '{c0} ml'
-        },
-        series: [{
-            name: '喝水量',
-            type: 'bar',
-            color: ['#aadaf5'],
-            data: drinkQuantity && drinkQuantity.data ? drinkQuantity.data : []
-        }]
+const mapStateToProps = ({ router: { currentPath }, charts: { drinkQuantity } }) => {
+    const chartData = drinkQuantity && drinkQuantity.data ? drinkQuantity.data : [];
+    let total = 0;
+    if (chartData.length !== 0) {
+        total = chartData.map(quantity => Number(quantity)).reduce((accumulator, currentValue) => accumulator + currentValue);
     }
-});
+    return {
+        currentPath,
+        eChartsOptions: {
+            title: {
+                text: `今日总量: ${total}ml`
+            },
+            legend: {
+                data: ['喝水量']
+            },
+            xAxis: {
+                data: drinkQuantity && drinkQuantity.time ? drinkQuantity.time : [],
+            },
+            yAxis: {
+                name: '毫升(ml)'
+            },
+            tooltip: {
+                formatter: '{c0} ml'
+            },
+            series: [{
+                name: '喝水量',
+                type: 'bar',
+                color: ['#aadaf5'],
+                data: chartData
+            }]
+        }
+    }
+};
 
 export default connect(mapStateToProps)(Dashboard);

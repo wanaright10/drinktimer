@@ -3,11 +3,22 @@ import allReducers from './reducers/index.js';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Router, { PathEnum } from "./components/route/Router";
-import { redirectTo, setQuickDrinkQuantityList, updateIntervalTime, updateNotificationStatus } from "./actions";
+import {
+    redirectTo,
+    saveChartsDrinkQuantity,
+    setQuickDrinkQuantityList,
+    updateIntervalTime,
+    updateNotificationStatus
+} from "./actions";
 import LocalContainer from "./components/common/LocalContainer";
 import { getNotificationPermitAndAddListerner, sendDelayedNotification } from "./components/util/LocalNotifications";
 import { IntervalType } from "./components/settings/IntervalInputPage";
-import { findIntervalTime, findNotificationStatus, findQuickDrinkQuantityList } from "./components/util/DBService";
+import {
+    findIntervalTime,
+    findNotificationStatus,
+    findQuickDrinkQuantityList,
+    findTodayDrinkData
+} from "./components/util/DBService";
 
 const store = createStore(allReducers);
 store.dispatch(redirectTo(PathEnum.dashboard, PathEnum.dashboard));
@@ -33,6 +44,10 @@ export default class Application extends Component {
         });
 
         findIntervalTime('interval', time => sendDelayedNotification(Number(time)));
+
+        findTodayDrinkData(drinkQuantity => {
+            store.dispatch(saveChartsDrinkQuantity(drinkQuantity));
+        });
     }
 
     render() {

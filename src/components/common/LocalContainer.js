@@ -7,7 +7,7 @@ import { Container, Content } from "native-base";
 const LocalContainer = ({ children }) => (
     <Container>
         <LocalHeader />
-        <Content>
+        <Content keyboardShouldPersistTaps={'never'} disableKBDismissScroll>
             {children}
         </Content>
         <LocalFooter />
