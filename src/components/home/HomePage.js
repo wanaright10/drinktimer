@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Echarts from "native-echarts";
-import { Body, Card, CardItem, Icon, Left, Text, Thumbnail, View } from 'native-base';
+import { Card, CardItem, Text, Thumbnail, View } from 'native-base';
 import ReactPropTypes from "prop-types";
-import { Image } from "react-native";
 
 class Home extends Component {
 
