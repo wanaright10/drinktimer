@@ -7,7 +7,7 @@ import {
     UPDATE_INTERVAL_TIME,
     PUSH_QUICK_DRINK_QUANTITY_LIST,
     DELETE_QUICK_DRINK_QUANTITY_LIST,
-    SET_QUICK_DRINK_QUANTITY_LIST
+    SET_QUICK_DRINK_QUANTITY_LIST, SAVE_CHARTS_MONTHS_DRINK_QUANTITY
 } from "../actions";
 import { IntervalType } from "../components/settings/IntervalInputPage";
 
@@ -29,6 +29,11 @@ const chartsReducer = (state = {}, action) => {
             return {
                 ...state,
                 drinkQuantity: action.payload,
+            };
+        case SAVE_CHARTS_MONTHS_DRINK_QUANTITY:
+            return {
+                ...state,
+                monthDrinkQuantity: action.payload,
             };
         case PUSH_ONE_CHARTS_DRINK_QUANTITY:
             const { time, data } = state.drinkQuantity;

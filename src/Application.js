@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import Router, { PathEnum } from "./components/route/Router";
 import {
     redirectTo,
-    saveChartsDrinkQuantity,
+    saveChartsDrinkQuantity, saveChartsMonthsDrinkQuantity,
     setQuickDrinkQuantityList,
     updateIntervalTime,
     updateNotificationStatus
@@ -14,7 +14,7 @@ import LocalContainer from "./components/common/LocalContainer";
 import { getNotificationPermitAndAddListerner, sendDelayedNotification } from "./components/util/LocalNotifications";
 import { IntervalType } from "./components/settings/IntervalInputPage";
 import {
-    findIntervalTime,
+    findIntervalTime, findMonthDrinkData,
     findNotificationStatus,
     findQuickDrinkQuantityList,
     findTodayDrinkData
@@ -47,6 +47,10 @@ export default class Application extends Component {
 
         findTodayDrinkData(drinkQuantity => {
             store.dispatch(saveChartsDrinkQuantity(drinkQuantity));
+        });
+
+        findMonthDrinkData(monthsQuantity => {
+            store.dispatch(saveChartsMonthsDrinkQuantity(monthsQuantity));
         });
     }
 

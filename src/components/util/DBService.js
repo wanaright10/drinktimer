@@ -28,6 +28,46 @@ const DB = {
     },
 };
 
+export const findMonthDrinkData = callback => {
+    AsyncStorage.getAllKeys((error, keys) => {
+        AsyncStorage.multiGet(keys, (err, stores) => {
+            // dateQuantityDataObject: { month : totalQuantity}
+            const dateQuantityDataObject = stores
+                .filter(item => /^\d{4}-\d{2}-\d{2}$/.test(item[0]))
+                .map(item => ({
+                    date: moment(item[0]), // YYYY-MM-DD
+                    data: JSON.parse(item[1]) // {time: HH:mm, data: number}
+                }))
+                .reduce((resultArray, nextItem) => {
+                    const month = `${nextItem.date.month()}`;
+                    resultArray[month] = resultArray[month] || 0;
+                    resultArray[month] += nextItem.data.data.reduce((totalQuantity, nextTimeQuantity) => totalQuantity + nextTimeQuantity);
+                    return resultArray;
+                }, {});
+
+            // {month: [number...], quantity: [number...]}
+            const result = Object.keys(dateQuantityDataObject).reduce((resultObject, nextMonth) => {
+                resultObject.months = resultObject.months || [];
+                resultObject.months.push(nextMonth);
+
+                resultObject.quantity = resultObject.quantity || [];
+                resultObject.quantity.push(dateQuantityDataObject[nextMonth] / 1000);
+                return resultObject;
+            }, {});
+
+            result.months.sort((a, b) => a - b);
+            result.quantity.sort((a, b) => a - b);
+
+            callback(result);
+            // callback({
+            //     months:['1','2','3','4','5','6'],
+            //     quantity:[1.21,2.4,3.22,2.4,1.6,2.9]
+            // });
+        });
+    });
+};
+
+
 export const findTodayDrinkData = (callBack) => {
     const key = moment().format(DATE_PATTERN);
     DB.find(key).then(todayDataStr => {
