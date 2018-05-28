@@ -55,6 +55,9 @@ export const findMonthDrinkData = callback => {
                 return resultObject;
             }, {});
 
+            result.months = result.months || [];
+            result.quantity = result.quantity || [];
+
             result.months.sort((a, b) => a - b);
             result.quantity.sort((a, b) => a - b);
 
