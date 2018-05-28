@@ -1,15 +1,14 @@
 {
   "expo": {
     "name": "喝水提醒",
-    "description": "This project is really great.",
+    "description": "一个提醒您定时喝水的软件!",
     "slug": "drinktimer",
     "privacy": "public",
     "sdkVersion": "27.0.0",
     "platforms": [
-      "ios",
-      "android"
+      "ios"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -26,9 +25,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dongwang.drinktimer"
-    },
-    "android": {
-      "package": "com.dongwang.drinktimer"
     }
   }
 }

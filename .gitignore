@@ -1,7 +1,8 @@
 node_modules/**/*
-.expo/*
+assets/.expo/*
 npm-debug.*
 .idea/*
 .DS_Store
 android/*
 ios/*
+.expo/*
