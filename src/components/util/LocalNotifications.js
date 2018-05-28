@@ -60,17 +60,25 @@ export const sendImmediateNotification = () => {
         .catch(err => console.error(err))
 };
 
-export const sendDelayedNotification = (minutes) => {
-    findNotificationStatus(status => {
-        if (status === 'true') {
-            localNotification.data = { type: 'delayed' };
-            const schedulingOptions = {
-                time: moment().add(minutes, 'm').valueOf()
-            };
+export const sendDelayedNotification = (minutes, sendDirectly = false) => {
+    const sendNotification = () => {
+        localNotification.data = { type: 'delayed' };
+        const schedulingOptions = {
+            time: moment().add(minutes, 'm').valueOf()
+        };
 
-            Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions)
-                .then(id => console.info(`Delayed notification scheduled (${id}) at ${moment(schedulingOptions.time).format()}`))
-                .catch(err => console.error(err))
-        }
-    });
+        Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions)
+            .then(id => console.info(`Delayed notification scheduled (${id}) at ${moment(schedulingOptions.time).format()}`))
+            .catch(err => console.error(err))
+    };
+
+    if (sendDirectly) {
+        sendNotification();
+    } else {
+        findNotificationStatus(status => {
+            if (status === 'true') {
+                sendNotification();
+            }
+        });
+    }
 };
