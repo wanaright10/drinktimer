@@ -29,17 +29,22 @@ async function getiOSNotificationPermission() {
 }
 
 const listenForNotifications = () => {
-    Notifications.cancelAllScheduledNotificationsAsync();
     Notifications.addListener(notification => {
         if (notification.origin === 'received') {
             Alert.alert('该喝水啦!', '喝水并照顾好自己哦', [
                     {
                         text: '马上喝',
-                        onPress: () => findIntervalTime('interval', time => sendDelayedNotification(Number(time)))
+                        onPress: () => {
+                            Notifications.cancelAllScheduledNotificationsAsync();
+                            findIntervalTime('interval', time => sendDelayedNotification(Number(time)));
+                        }
                     },
                     {
                         text: '等会儿再提醒我',
-                        onPress: () => findIntervalTime('intervalLater', time => sendDelayedNotification(Number(time)))
+                        onPress: () => {
+                            Notifications.cancelAllScheduledNotificationsAsync();
+                            findIntervalTime('intervalLater', time => sendDelayedNotification(Number(time)));
+                        }
                     },
                 ],
                 { cancelable: true });
